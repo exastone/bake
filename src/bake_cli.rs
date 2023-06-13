@@ -1,7 +1,7 @@
 use clap::{Parser, Subcommand};
 use std::path::PathBuf;
 
-use crate::helpers::helpers::check_for_bake_config;
+use crate::{bake_init, helpers::check_for_bake_config};
 
 #[derive(Parser)]
 #[command(author, version, about, long_about = None)]
@@ -23,14 +23,14 @@ pub struct Cli {
 
 #[derive(Subcommand)]
 enum Commands {
-    /// Create a new project
+    /// New project dialog
     Init {
         /// lists values
         #[arg(short, long)]
         list: bool,
     },
 
-    /// does testing things
+    /// Just here for testing
     Test {
         /// lists test values
         #[arg(short, long)]
@@ -52,8 +52,9 @@ pub fn clap_cli(cli: Cli) {
     // Note, only flags can have multiple occurrences
     match cli.debug {
         0 => {}
-        1 => println!("Debug mode is kind of on"),
-        _ => println!("Don't be crazy"),
+        1 => println!("'d' flag counted once"),
+        2 => println!("'d' flag counted twice"),
+        _ => println!("'d' flag counted more then twice"),
     }
 
     // You can check for the existence of subcommands, and if found use their
@@ -65,11 +66,7 @@ pub fn clap_cli(cli: Cli) {
             }
         }
         Some(Commands::Init { list }) => {
-            if *list {
-                println!("Create a new project");
-            } else {
-                println!("Init Else");
-            }
+            bake_init::initialize_project();
         }
         None => {
             if !check_for_bake_config() {

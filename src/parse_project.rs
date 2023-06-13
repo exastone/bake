@@ -1,3 +1,14 @@
+enum FileType {
+    Header,
+    Source,
+}
+
+struct File {
+    name: String,
+    dependencies: Vec<String>,
+    file_kind: FileType,
+}
+
 // get list of all files in project directory
 pub fn get_project_files(project_path: String) -> Vec<File> {
     let mut build_files: Vec<File> = Vec::new();
